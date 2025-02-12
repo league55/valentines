@@ -2,25 +2,30 @@ import './style.css';
 
 const scenes = [
   {
-    image: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcDd6Y2E4OWF1Y3E2OWgwbzVxbXBxM2t4Ynl1bWx4Y2g5amdyNXV6eCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7TKMt1VVNkHV2PaE/giphy.gif',
-    text: 'Ready for a fun journey?',
-    noButtonText: 'Not sure...'
+    image: 'https://media.giphy.com/media/e1Tf1eOo6976zuGv3C/giphy.gif?cid=790b7611lumg1gi9vx7myjyp7qu1qcxryucswdqjufsdvqlv&ep=v1_gifs_search&rid=giphy.gif',
+    text: 'Will you be my valentine?',
+    noButtonText: 'Don\'t do this to me...'
   },
   {
-    image: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExaW50M2ptMWN0ZHJqOWJxbzNxdWx0NHZ5Y2ptdWd2NXBxZXgydWx6eiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l2Sqir5ZxfoS27EvS/giphy.gif',
-    text: 'Come on, it will be awesome!',
-    noButtonText: 'Still thinking...'
+    image: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExMDIwYjZqMTVqdzZ3dDhneHliaGZjOXYxMnZnczN3ZXRsM2preDR2aSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/GwskZm1jXg8cDvuZJ6/giphy.gif',
+    text: 'Will you be my valentine?',
+    noButtonText:  'You are breaking my heart'
   },
   {
-    image: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcWRxdWRwY3Zxa2txbWt0MWQ2NnE0Y3h6Y2ptd3k2ZnBxeWQyaXR6eiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3o7TKoWXm3okO1kgHC/giphy.gif',
-    text: 'Just one click away from happiness!',
-    noButtonText: 'Maybe later?'
+    image: 'https://media.giphy.com/media/l2R0cE5EqO3QHiCoU/giphy.gif?cid=790b76110a6v5b29ss0txc1isg39rqaa43w4apb33xxxi6bc&ep=v1_gifs_search&rid=giphy.gif&ct=g',
+    text: 'Will you be my valentine?',
+    noButtonText:'Pookie pleaaaaase'
+  },
+  {
+    image: 'https://media.giphy.com/media/YZOsKxJfmvzG0/giphy.gif?cid=790b7611tq4cxvct7nxtnrb9vtbzix9ijdrffax6vnqtgls4&ep=v1_gifs_search&rid=giphy.gif&ct=g',
+    text: 'Will you be my valentine?',
+    noButtonText:  "Are you sure?"
   }
 ];
 
 const finalScene = {
-  image: 'https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbWN0ZWVkOWR5Y3JyMm9xdWx0NHZ5Y2ptdWd2NXBxZXgydWx6eiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/l2Sqir5ZxfoS27EvS/giphy.gif',
-  text: '🎉 Yay! Let\'s celebrate! 🎉'
+  image: 'https://media.giphy.com/media/l4pTdcifPZLpDjL1e/giphy.gif?cid=ecf05e47nygz62ttr6e0mpr6lngzb9837cmli4kdf1v9fg7e&ep=v1_gifs_search&rid=giphy.gif&ct=g',
+  text: '🎉 Yay! xoxo 🎉'
 };
 
 let currentSceneIndex = 0;
@@ -35,7 +40,7 @@ function createScene(sceneData) {
       <div class="text-content">${sceneData.text}</div>
       ${sceneData === finalScene ? '' : `
         <div class="button-container">
-          <button class="btn btn-no ${currentSceneIndex === scenes.length - 1 && !hasClickedYes ? 'evasive' : ''}">${sceneData.noButtonText || 'No'}</button>
+          <button class="btn btn-no ${currentSceneIndex === scenes.length - 1 && !hasClickedYes ? '' : ''}">${sceneData.noButtonText || 'No'}</button>
           <button class="btn btn-yes">Yes!</button>
         </div>
       `}
@@ -59,7 +64,11 @@ function showFinalScene() {
 function setupButtonInteractions() {
   const noButton = document.querySelector('.btn-no');
   const yesButton = document.querySelector('.btn-yes');
-  
+  if(noButton) {
+    if(currentSceneIndex == scenes.length - 1) {
+      makeButtonEvasive();
+    }
+  }
   if (noButton && yesButton) {
     noButton.addEventListener('click', showNextScene);
     yesButton.addEventListener('click', showFinalScene);
@@ -73,6 +82,39 @@ function setupButtonInteractions() {
       yesButton.classList.remove('jumping');
     });
   }
+}
+function getRandomDirection(buttonRect) {
+      const directions = [
+        { left: buttonRect.left + buttonRect.width + 20, top: buttonRect.top - buttonRect.height - 30 }, // upright
+        { left: buttonRect.left - buttonRect.width - 20, top: buttonRect.top - buttonRect.height - 30 }, // upleft
+        { left: buttonRect.left + buttonRect.width + 20, top: buttonRect.top + buttonRect.height + 30 }, // downright
+        { left: buttonRect.left - buttonRect.width - 20, top: buttonRect.top + buttonRect.height + 30 }  // downleft
+      ];
+      return directions[Math.floor(Math.random() * directions.length)];
+}
+
+
+function makeButtonEvasive() {
+  const noButton = document.querySelector('.btn-no');
+
+  noButton.addEventListener('mouseenter', () => { 
+    const button = document.querySelector('.btn-no');
+    const buttonRect = button.getBoundingClientRect();
+    let randomDirection;
+    do {
+      randomDirection = getRandomDirection(buttonRect);
+    } while(!(
+      randomDirection.left >= 0 && 
+      randomDirection.top >= 0 && 
+      randomDirection.left + buttonRect.width <= window.innerWidth && 
+      randomDirection.top + buttonRect.height <= window.innerHeight)
+    )
+    
+    button.style.position = 'absolute';
+    button.style.left = `${randomDirection.left}px`;
+    button.style.top = `${randomDirection.top}px`;
+    button.removeEventListener('click')
+  });
 }
 
 function renderCurrentScene() {
