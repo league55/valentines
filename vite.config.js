@@ -1,3 +1,3 @@
 export default {
-  base: '/interactive-story/'
+  base: '/valentines/'
 }
